@@ -350,6 +350,14 @@ public class BatchImageWatermarkerServiceImpl implements BatchImageWatermarkerSe
         File table = null;
         for (File f: files) {
             String name = f.getName();
+            if (name.startsWith("~$")) {
+                log.debug("跳过 Excel 临时文件: {}", name);
+                continue;
+            }
+            if (name.startsWith(".")) {
+                log.debug("跳过隐藏文件: {}", name);
+                continue;
+            }
             String type = name.substring(name.lastIndexOf(".") + 1);
             if (FileUtil.TABLE.contains(type)) {
                 if (table == null) table = f;
